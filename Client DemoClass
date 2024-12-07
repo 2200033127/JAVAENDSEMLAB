@@ -1,0 +1,38 @@
+// ClientDemo.java
+package com.klef.jfsd.exam;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+public class ClientDemo {
+    public static void main(String[] args) {
+        SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+        Session session = factory.openSession();
+
+        session.beginTransaction();
+
+        Vehicle vehicle = new Vehicle(); // This won't work because Vehicle is abstract
+        Car car = new Car();
+        car.setName("Sedan");
+        car.setType("Car");
+        car.setMaxSpeed(180);
+        car.setColor("Red");
+        car.setNumberOfDoors(4);
+
+        Truck truck = new Truck();
+        truck.setName("Pickup");
+        truck.setType("Truck");
+        truck.setMaxSpeed(120);
+        truck.setColor("Blue");
+        truck.setLoadCapacity(1500);
+
+        session.save(car);
+        session.save(truck);
+
+        session.getTransaction().commit();
+
+        session.close();
+        factory.close();
+    }
+}
